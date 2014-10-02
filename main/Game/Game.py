@@ -1,6 +1,8 @@
 from main.Handler.PointHandler import *
 from main.Handler.UserHandler import *
+from main.Game.shop_main import shop_main
 import sys,random
+from main import Game
 
 
 
@@ -16,8 +18,12 @@ class main():
         self.scoreLVL1=random.randint(1,5)
         self.scoreLVL2=random.randint(1,10)
         self.scoreLVL3=random.randint(1,20)
-    
+        
+        self.turns=random.randint(8,20)
+        
         self.print_score=0
+        
+        self.pointDict={}
         
         st_=raw_input("Start? Y/N:")
         if st_.lower()=="yes" or "y":
@@ -31,18 +37,30 @@ class main():
             #Start loop
             
             prim=raw_input("Pick Apple? Y/N: ")
-            print(prim)
-            if prim.lower()=="yes" or "y" or "Y":
+            print(self.turns)
+            if prim.strip()=='y' or prim.strip()=="Y" or prim.strip()=="yes" or prim.strip()=="YES":
                 self.points.addPoint(self.scoreLVL1, False)
                 self.print_score+=1
-                print("hi")
-                
-                if self.print_score==10:
-                    self.points.getPoints(self.user, True)
-                active_state=True
+                self.turns-=1
                 
                 
-        self.points.addPoint(10, True)
+                
+                if self.turns== 0 or self.turns < 0:
+                    print "Your final score is:",self.points.getPoints(self.user, False)
+                    shop_=raw_input("Go to shop? Y/N:")
+                    if shop_.strip()=='y' or shop_.strip()=="Y" or shop_.strip()=="yes" or shop_.strip()=="YES":
+                        me=Game.Game
+                        me.shop_main(self.user,self.points.getPoints(self.user, False),self.pointDict)
+                        break
+                else:
+                    pass
+            elif prim.strip()=="n" or prim.strip()=="no" or prim.strip()=="N" or prim.strip()=="NO":
+                break
+                print("Thanks for playing!")
+                sys.exit("Really, thanks!")
+            else:
+                break
+                print("Invalid Command.")
         #Debugging Thing: points.getPoints(user,True)
         
         
