@@ -10,10 +10,12 @@ class main():
 
     
     
-    def __init__(self,user):
-        self.points=PointHandler(user,0)
+    def __init__(self,user,score):
+        self.points=PointHandler(user,score)
         self.user=user
         this=main
+        
+        self.score=score
         
         self.scoreLVL1=random.randint(1,5)
         self.scoreLVL2=random.randint(1,10)
@@ -31,17 +33,54 @@ class main():
         
         self.MachinePoints=0
         
+        self.hasPointMachine=False
+        '''
         st_=raw_input("Start? Y/N:")
         if st_.lower()=="yes" or "y":
-            this.main_loop(self)
+            this.main_loop(self,shop_main.pointsDict)
         else:
             print("Well thanks for coming along for the party!")
             sys.exit("Bye bye!")
-    def main_loop(self):
+        '''
+    
+    
+    def fromStartEvent(self):
+        this=main
+        st_=raw_input("Start? Y/N:")
+        if st_.lower()=="yes" or "y":
+            this.main_loop(self,shop_main.pointsDict)
+        else:
+            print("Well thanks for coming along for the party!")
+            sys.exit("Bye bye!")
+    def returnFromShopEvent(self,pointDict):
+        
+        
+        print "HELLO"
+        self.pointDict.clear()
+        self.pointDict=pointDict
+        
+        print self.pointDict
+        
+        start_again=raw_input("Start Game? Y/N: ")
+        if start_again.lower()=="y" or start_again.lower()=="yes":
+            this=Game.Game
+            this.main.main_loop(self, pointDict)
+    def main_loop(self,pointDictt):
+        for i in range(100):
+            key='Machine'
+            if key in self.pointDict:
+                self.hasPointMachine=True
+                print "Point Machine Module Enabled."
+                break;    
+            else:
+                print "User does not have Point Machine enabled."
+                print self.pointDict
+                break;
+        
         active_state=True
         while active_state==True:
             #Start loop
-            
+
             prim=raw_input("Pick Apple? Y/N: ")
             print(self.turns)
             if prim.strip()=='y' or prim.strip()=="Y" or prim.strip()=="yes" or prim.strip()=="YES":
@@ -51,17 +90,17 @@ class main():
                 
                 #######
                 
-                if self.pointDict['Machine']==True:
+                if self.hasPointMachine==True:
                     self.points.addPoint(self.MachineLVL1, False)
                     self.MachinePoints+=self.MachineLVL1
-                else:
-                    pass
+            
                 
                 ########
                 
-                if self.turns== 0 or self.turns < 0:
+                if self.turns == 0 or self.turns < 0:
                     print "Your final score is:",self.points.getPoints(self.user, False)
-                    if self.pointDict['Machine']==True:
+                    if self.hasPointMachine==True:
+                        print "HI"
                         print "You earned a bonus of",self.MachinePoints,"from your 'Points Machine' upgrade!"
                     else:
                         pass
@@ -72,7 +111,6 @@ class main():
                         break
                 else:
                     pass
-                
                 
             elif prim.strip()=="n" or prim.strip()=="no" or prim.strip()=="N" or prim.strip()=="NO":
                 break
