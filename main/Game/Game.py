@@ -19,11 +19,17 @@ class main():
         self.scoreLVL2=random.randint(1,10)
         self.scoreLVL3=random.randint(1,20)
         
-        self.turns=random.randint(8,20)
+        self.turns=random.randint(1,3)
         
         self.print_score=0
         
         self.pointDict={}
+        
+        self.MachineLVL1=random.randint(1,3)
+        self.MachineLVL2=random.randint(1,5)
+        self.MachineLVL3=random.randint(1,8)
+        
+        self.MachinePoints=0
         
         st_=raw_input("Start? Y/N:")
         if st_.lower()=="yes" or "y":
@@ -43,10 +49,22 @@ class main():
                 self.print_score+=1
                 self.turns-=1
                 
+                #######
                 
+                if self.pointDict['Machine']==True:
+                    self.points.addPoint(self.MachineLVL1, False)
+                    self.MachinePoints+=self.MachineLVL1
+                else:
+                    pass
+                
+                ########
                 
                 if self.turns== 0 or self.turns < 0:
                     print "Your final score is:",self.points.getPoints(self.user, False)
+                    if self.pointDict['Machine']==True:
+                        print "You earned a bonus of",self.MachinePoints,"from your 'Points Machine' upgrade!"
+                    else:
+                        pass
                     shop_=raw_input("Go to shop? Y/N:")
                     if shop_.strip()=='y' or shop_.strip()=="Y" or shop_.strip()=="yes" or shop_.strip()=="YES":
                         me=Game.Game
@@ -54,6 +72,8 @@ class main():
                         break
                 else:
                     pass
+                
+                
             elif prim.strip()=="n" or prim.strip()=="no" or prim.strip()=="N" or prim.strip()=="NO":
                 break
                 print("Thanks for playing!")

@@ -12,20 +12,28 @@ class shop_main():
         this=shop_main
         this.upgradeOptions(self)
     def upgradeOptions(self):
-        shop_upgrades=raw_input("Upgrade Module 'type 'help' for help':")
-        shop_upgrades.split(' ')
+        shop_upgrades=raw_input("Upgrade Module 'type 'help' for help':").split()
         if shop_upgrades=='help' or shop_upgrades=='?' or shop_upgrades=='Help' or shop_upgrades=='h':
-            print("Upgrade List:")
-            print("--Point Machine")
-            print("--Point Factory")
-            print("--Point Empire")
-            print("'help <upgrade>' for a description of each upgrade. e.g 'help --Point Macine'")
-            print("WARNING: Upgrades are case sensitive. INVALID: 'help Point Machine'")
-            print("DON'T DO THAT.")
             this=shop_main
             this.upgradeOptions(self)
-        args=[str(x) for x in[shop_upgrades]]
+        args=[x for x in shop_upgrades]
         print args
-        if args[0]=='help' & args[1]=='--Point':
-            print(self.score)
+        if args[0]=='help':
+            this.upgradeOptions()
+            if args[1]=='--Point':
+                if args[2]=='Machine':
+                        self.pointsDict['Machine']=True
+    def helpMenu(self):
+        print("Upgrade List:")
+        print("--Point Machine")
+        print("--Point Factory")
+        print("--Point Empire")
+        print("'help <upgrade>' for a description of each upgrade. e.g 'help --Point Macine'")
+        print("WARNING: Upgrades are case sensitive. INVALID: 'help Point Machine'")
+        print("DON'T DO THAT.")
+    def PointMenu(self):
+        print("Point Menu")
+        print("--Point Machine")
+        print("--Point Factory")
+        print("--Point Empire")
         
