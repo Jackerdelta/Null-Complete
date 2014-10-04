@@ -31,7 +31,12 @@ class main():
         self.MachineLVL2=random.randint(1,5)
         self.MachineLVL3=random.randint(1,8)
         
+        self.EmpireLVL1=self.points.getPoints(self.user, False)*random.randint(1,3)
+        
         self.MachinePoints=0
+        self.FactoryPoints=0
+        self.EmpirePoints=0
+        
         
         self.hasPointMachine=False
         self.hasPointFactory=False
@@ -102,15 +107,22 @@ class main():
                 if self.hasPointMachine==True:
                     self.points.addPoint(self.MachineLVL1, False)
                     self.MachinePoints+=self.MachineLVL1
-            
-                
+                if self.hasPointFactory==True:
+                    self.points.addPoint(1, False)
+                    self.FactoryPoints+=1
+                if self.hasPointEmpire==True:
+                    self.points.addPoint(self.EmpireLVL1, False)
+                    self.EmpirePoints+=self.EmpireLVL1
                 ########
                 
                 if self.turns == 0 or self.turns < 0:
                     print "Your final score is:",self.points.getPoints(self.user, False)
                     if self.hasPointMachine==True:
-                        print "HI"
                         print "You earned a bonus of",self.MachinePoints,"from your 'Points Machine' upgrade!"
+                    elif self.hasPointFactory==True:
+                        print "You earned a bonus of",self.FactoryPoints,"from your 'Points Factory' upgrade!"
+                    elif self.hasPointEmpire==True:
+                        print "You earned a bonus of",self.EmpirePoints,"from your 'Points Factory upgrade!"
                     else:
                         pass
                     shop_=raw_input("Go to shop? Y/N:")
