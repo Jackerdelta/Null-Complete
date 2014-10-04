@@ -37,6 +37,9 @@ class main():
         self.FactoryPoints=0
         self.EmpirePoints=0
         
+        self.MachineLVL=0
+        self.FactoryLVL=0
+        self.EmpireLVL=0
         
         self.hasPointMachine=False
         self.hasPointFactory=False
@@ -90,6 +93,20 @@ class main():
                 print "User does not have Point Machine enabled."
                 print self.pointDict
                 break;
+        for j in range(100):
+            a='MachineLVL'
+            a1='FactoryLVL'
+            a2='EmpireLVL'
+            for skill,level in self.pointDict.iteritems():
+                if a in self.pointDict:
+                    self.MachineLVL=level
+                    print self.MachineLVL
+                if a1 in self.pointDict:
+                    self.FactoryLVL=level
+                    print self.FactoryLVL
+                if a2 in self.pointDict:
+                    self.EmpireLVL=level
+                    print self.EmpireLVL
         
         active_state=True
         while active_state==True:
@@ -119,9 +136,9 @@ class main():
                     print "Your final score is:",self.points.getPoints(self.user, False)
                     if self.hasPointMachine==True:
                         print "You earned a bonus of",self.MachinePoints,"from your 'Points Machine' upgrade!"
-                    elif self.hasPointFactory==True:
+                    if self.hasPointFactory==True:
                         print "You earned a bonus of",self.FactoryPoints,"from your 'Points Factory' upgrade!"
-                    elif self.hasPointEmpire==True:
+                    if self.hasPointEmpire==True:
                         print "You earned a bonus of",self.EmpirePoints,"from your 'Points Factory upgrade!"
                     else:
                         pass

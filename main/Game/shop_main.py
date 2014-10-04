@@ -21,7 +21,7 @@ class shop_main():
         
         
         this=shop_main
-        print "You have:"+self.score+"points."
+        print "You have:",self.score,"points."
         shop_upgrades=raw_input("Upgrade Module 'type 'help' for help':").split()
         
         
