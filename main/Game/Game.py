@@ -34,6 +34,8 @@ class main():
         self.MachinePoints=0
         
         self.hasPointMachine=False
+        self.hasPointFactory=False
+        self.hasPointEmpire=False
         '''
         st_=raw_input("Start? Y/N:")
         if st_.lower()=="yes" or "y":
@@ -53,9 +55,6 @@ class main():
             print("Well thanks for coming along for the party!")
             sys.exit("Bye bye!")
     def returnFromShopEvent(self,pointDict):
-        
-        
-        print "HELLO"
         self.pointDict.clear()
         self.pointDict=pointDict
         
@@ -68,10 +67,20 @@ class main():
     def main_loop(self,pointDictt):
         for i in range(100):
             key='Machine'
+            key1='Factory'
+            key2='Empire'
             if key in self.pointDict:
                 self.hasPointMachine=True
                 print "Point Machine Module Enabled."
-                break;    
+                break;
+            if key1 in self.pointDict:
+                self.hasPointFactory=True
+                print "Point Factory Module Enabled."
+                break;
+            if key2 in self.pointDict:
+                self.hasPointEmpire=True
+                print "Point Factory Module Enabled." 
+                break;   
             else:
                 print "User does not have Point Machine enabled."
                 print self.pointDict
