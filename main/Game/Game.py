@@ -13,7 +13,8 @@ class main():
     def __init__(self,user,score):
         self.points=PointHandler(user,score)
         self.user=user
-        this=main
+        
+        self.points.addPoint(100000, False)
         
         self.score=score
         
@@ -62,7 +63,8 @@ class main():
         else:
             print("Well thanks for coming along for the party!")
             sys.exit("Bye bye!")
-    def returnFromShopEvent(self,pointDict):
+    def returnFromShopEvent(self,pointDict,score):
+        self.points.setPoints(score, False)
         self.pointDict.clear()
         self.pointDict=pointDict
         
@@ -93,20 +95,26 @@ class main():
                 print "User does not have Point Machine enabled."
                 print self.pointDict
                 break;
-        for j in range(100):
+
+        for skill,level in self.pointDict.items():
             a='MachineLVL'
             a1='FactoryLVL'
             a2='EmpireLVL'
-            for skill,level in self.pointDict.iteritems():
-                if a in self.pointDict:
-                    self.MachineLVL=level
-                    print self.MachineLVL
-                if a1 in self.pointDict:
-                    self.FactoryLVL=level
-                    print self.FactoryLVL
-                if a2 in self.pointDict:
-                    self.EmpireLVL=level
-                    print self.EmpireLVL
+            if a in self.pointDict:
+                self.MachineLVL=level
+                print self.MachineLVL
+                break;
+            if a1 in self.pointDict:
+                self.FactoryLVL=level
+                print self.FactoryLVL
+                break;
+            if a2 in self.pointDict:
+                self.EmpireLVL=level
+                print self.EmpireLVL
+                break;
+            else:
+                print "User has no skills purchased"
+                break;
         
         active_state=True
         while active_state==True:

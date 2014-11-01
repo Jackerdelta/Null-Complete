@@ -21,4 +21,7 @@ If you wanted to add points.
 score.addPoint(10, False)
 #DebuggingFTW.
 '''
+
+
+
 start=Game.main(user_arg,0).fromStartEvent()

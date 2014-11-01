@@ -23,6 +23,16 @@ class PointHandler:
             pointDict[self.user]=self.points
             if output==True:
                 print pointDict[self.user]
+    def setPoints(self,value,output=False):
+        try:
+            int(value)
+        except:
+            print("Error: Expected int and got something else.")
+        finally:
+            self.points=value
+            pointDict[self.user]=self.points
+            if output==True:
+                print pointDict[self.user]
     def subtractPoint(self,pointsToSub,output=False):
         try:
             int(pointsToSub)

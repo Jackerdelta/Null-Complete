@@ -14,6 +14,10 @@ class shop_main():
         self.user=user
         self.score=score
     
+        self.MachineLVL=0
+        self.FactoryLVL=0
+        self.EmpireLVL=0
+        
         
         this=shop_main
         this.upgradeOptions(self)
@@ -29,21 +33,24 @@ class shop_main():
         
         
         if shop_upgrades=='help' or shop_upgrades=='?' or shop_upgrades=='Help' or shop_upgrades=='h':
-            
             this.upgradeOptions(self)
         if args[0] == 'return' or args[0] == 'r' :
             me=Game.Game
-            i1=me.main(self.user,self.score).returnFromShopEvent(pointsDict)
+            i1=me.main(self.user,self.score).returnFromShopEvent(pointsDict,self.score)
         
         
         
         print "DEBUG:",args
         
+        o=self.score
+        y=self.MachineLVL
+                    
+        
         #COMMANDS#
         me=Game.Game
         if args[0]=='get' and args[1]=='--Point' and args[2]=='Machine':
-            if self.score>500:
-                self.score-=500
+            if self.score>=500:
+                self.score=self.score-500
                 pointsDict['Machine']=True
                 for i in range(100):
                     key='Machine'
@@ -95,6 +102,7 @@ class shop_main():
         ###############
         #START OF UPGRADES
         if args[0]=='upgrade' and args[1]=='--Point' and args[2]=='Machine':
+            print "hello"
             for i in range(100):
                 key3='Machine'
                 if key3 in pointsDict:
@@ -105,248 +113,63 @@ class shop_main():
                     me.shop_main(self.user,self.score,pointsDict)
                     break;
             if userHasPointMachine==True:
-                if self.score>2000:
-                    self.score-=2000
-                    pointsDict['MachineLVL']=1
-                    for i in range(100):
-                        key4='MachineLVL1'
+                if self.MachineLVL==0:
+                    print "hello 0"
+                    if self.score >= 2000:
+                        self.score=self.score-2000
+                        pointsDict['MachineLVL']=1
+                        key4='MachineLVL'
                         if key4 in pointsDict:
                             print "You have now upgraded your Point Machine to Level 1!"
+                            self.MachineLVL=+1
+                            print self.MachineLVL
                             me.shop_main(self.user,self.score,pointsDict)
-                            break;
                         else:
                             print "There was an error purchasing this upgrade!"
                             me.shop_main(self.user,self.score,pointsDict)
                 elif self.score < 2000:
-                    print "You don't have enough points to purchase this upgrade!"
-                    me.shop_main(self.user,self.score,pointsDict)
-        
-        #LEVEL 2 MACHINE
-        
-        if args[0]=='upgrade' and args[1]=='--Point' and args[2]=='Machine':
-            for i in range(100):
-                key5='Machine'
-                if key5 in pointsDict:
-                    userHasPointMachine1=True
-                    break;
-                else:
-                    print("You haven't purchased the Machine Module upgrade yet!")
-                    me.shop_main(self.user,self.score,pointsDict)
-                    break;
-            if userHasPointMachine1==True:
-                if self.score>6000:
-                    self.score-=6000
-                    pointsDict['MachineLVL']=2
-                    for i in range(100):
-                        key6='MachineLVL'
-                        if key6 in pointsDict:
+                    print "You don't have enough points for this upgrade!"
+                if y==1:
+                    print "hi"
+                    if o > 6000:
+                        o=o-6000
+                        pointsDict['MachineLVL']=2
+                        self.MachineLVL=2
+                        
+                        key5='MachineLVL'
+                            
+                        if key5 in pointsDict:
                             print "You have now upgraded your Point Machine to Level 2!"
-                            me.shop_main(self.user,self.score,pointsDict)
-                            break;
+                            self.MachineLVL=+1
+                            print self.MachineLVL
+                            me.shop_main(self.user,o,pointsDict)
+                            
                         else:
                             print "There was an error purchasing this upgrade!"
                             me.shop_main(self.user,self.score,pointsDict)
                 elif self.score < 6000:
-                    print "You don't have enough points to purchase this upgrade!"
-                    me.shop_main(self.user,self.score,pointsDict)     
-        if args[0]=='upgrade' and args[1]=='--Point' and args[2]=='Machine':
-            for i in range(100):
-                key7='Machine'
-                if key7 in pointsDict:
-                    userHasPointMachine2=True
-                    break;
-                else:
-                    print("You haven't purchased the Machine Module upgrade yet!")
+                    print "You don't have enough points for this upgrade!"
+                if self.MachineLVL==2:
+                    if self.score > 12000:
+                        self.score=self.score-12000
+                        pointsDict['MachineLVL']=True
+                        self.MachineLVL=3
+                        for i in range(100):
+                            key6='MachineLVL'
+                            if key6 in pointsDict:
+                                print "You have now upgraded your Point Machine to Level 3!"
+                                print "This is the maximum level for this skill! For now."
+                                me.shop_main(self.user,self.score,pointsDict)
+                                break;
+                            else:
+                                print "There was an error purchasing this upgrade!"
+                                me.shop_main(self.user,self.score,pointsDict)
+                    elif self.score < 12000:
+                        print "You don't have enough points for this upgrade!"
                     me.shop_main(self.user,self.score,pointsDict)
-                    break;
-            if userHasPointMachine2==True:
-                if self.score>12000:
-                    self.score-=12000
-                    pointsDict['MachineLVL']=3
-                    for i in range(100):
-                        key8='MachineLVL'
-                        if key8 in pointsDict:
-                            print "You have now upgraded your Point Machine to Level 3!"
-                            print "This is the maximum level for this skill."
-                            me.shop_main(self.user,self.score,pointsDict)
-                            break;
-                        else:
-                            print "There was an error purchasing this upgrade!"
-                            me.shop_main(self.user,self.score,pointsDict)
-                elif self.score < 12000:
-                    print "You don't have enough points to purchase this upgrade!"
-                    me.shop_main(self.user,self.score,pointsDict)
+                elif self.MachineLVL >=3:
+                    print "Woah there. It seems you've already eached the max level for this skill!"
 #################### END OF UPGRADE FOR 'POINT MACHINE'
-
-        #START OF FACTORY UPGRADE
-        if args[0]=='upgrade' and args[1]=='--Point' and args[2]=='Factory':
-            for i in range(100):
-                f1='Factory'
-                if f1 in pointsDict:
-                    userHasPointFactory=True
-                    break;
-                else:
-                    print("You haven't purchased the Machine Module upgrade yet!")
-                    me.shop_main(self.user,self.score,pointsDict)
-                    break;
-            if userHasPointFactory==True:
-                if self.score>3000:
-                    self.score-=3000
-                    pointsDict['FactoryLVL']=1
-                    for i in range(100):
-                        m2='FactoryLVL'
-                        if m2 in pointsDict:
-                            print "You have now upgraded your Point Factory to Level 1!"
-                            me.shop_main(self.user,self.score,pointsDict)
-                            break;
-                        else:
-                            print "There was an error purchasing this upgrade!"
-                            me.shop_main(self.user,self.score,pointsDict)
-                elif self.score < 3000:
-                    print "You don't have enough points to purchase this upgrade!"
-                    me.shop_main(self.user,self.score,pointsDict)
-        
-        #LEVEL 2 FACTORY
-        
-        if args[0]=='upgrade' and args[1]=='--Point' and args[2]=='Factory':
-            for i in range(100):
-                m3='Factory'
-                if m3 in pointsDict:
-                    userHasPointFactory1=True
-                    break;
-                else:
-                    print("You haven't purchased the Machine Module upgrade yet!")
-                    me.shop_main(self.user,self.score,pointsDict)
-                    break;
-            if userHasPointFactory1==True:
-                if self.score>8000:
-                    self.score-=8000
-                    pointsDict['FactoryLVL']=2
-                    for i in range(100):
-                        m4='MachineLVL'
-                        if m4 in pointsDict:
-                            print "You have now upgraded your Point Factory to Level 2!"
-                            me.shop_main(self.user,self.score,pointsDict)
-                            break;
-                        else:
-                            print "There was an error purchasing this upgrade!"
-                            me.shop_main(self.user,self.score,pointsDict)
-                elif self.score < 8000:
-                    print "You don't have enough points to purchase this upgrade!"
-                    me.shop_main(self.user,self.score,pointsDict)     
-        if args[0]=='upgrade' and args[1]=='--Point' and args[2]=='Factory':
-            for i in range(100):
-                m5='Factory'
-                if m5 in pointsDict:
-                    userHasPointFactory2=True
-                    break;
-                else:
-                    print("You haven't purchased the Machine Module upgrade yet!")
-                    me.shop_main(self.user,self.score,pointsDict)
-                    break;
-            if userHasPointFactory2==True:
-                if self.score>16000:
-                    self.score-=16000
-                    pointsDict['FactoryLVL']=3
-                    for i in range(100):
-                        m6='MachineLVL'
-                        if m6 in pointsDict:
-                            print "You have now upgraded your Point Factory to Level 3!"
-                            print "This is the maximum level for this skill."
-                            me.shop_main(self.user,self.score,pointsDict)
-                            break;
-                        else:
-                            print "There was an error purchasing this upgrade!"
-                            me.shop_main(self.user,self.score,pointsDict)
-                elif self.score < 16000:
-                    print "You don't have enough points to purchase this upgrade!"
-                    me.shop_main(self.user,self.score,pointsDict)
-#################### END OF UPGRADE FOR 'POINT MACHINE' 
-        
-        #START OF EMPIRE UPGRADE
-        
-        if args[0]=='upgrade' and args[1]=='--Point' and args[2]=='Empire':
-            for i in range(100):
-                e1='Empire'
-                if e1 in pointsDict:
-                    userHasPointEmpire=True
-                    break;
-                else:
-                    print("You haven't purchased the Empire Module upgrade yet!")
-                    me.shop_main(self.user,self.score,pointsDict)
-                    break;
-            if userHasPointEmpire==True:
-                if self.score>5000:
-                    self.score-=5000
-                    pointsDict['EmpireLVL']=1
-                    for i in range(100):
-                        e2='MachineLVL1'
-                        if e2 in pointsDict:
-                            print "You have now upgraded your Point Empire to Level 1!"
-                            me.shop_main(self.user,self.score,pointsDict)
-                            break;
-                        else:
-                            print "There was an error purchasing this upgrade!"
-                            me.shop_main(self.user,self.score,pointsDict)
-                elif self.score < 5000:
-                    print "You don't have enough points to purchase this upgrade!"
-                    me.shop_main(self.user,self.score,pointsDict)
-        
-        #LEVEL 2 EMPIRE
-        
-        if args[0]=='upgrade' and args[1]=='--Point' and args[2]=='Empire':
-            for i in range(100):
-                e3='Empire'
-                if e3 in pointsDict:
-                    userHasPointEmpire1=True
-                    break;
-                else:
-                    print("You haven't purchased the Empire Module upgrade yet!")
-                    me.shop_main(self.user,self.score,pointsDict)
-                    break;
-            if userHasPointEmpire1==True:
-                if self.score>10000:
-                    self.score-=10000
-                    pointsDict['EmpireLVL']=2
-                    for i in range(100):
-                        e4='MachineLVL'
-                        if e4 in pointsDict:
-                            print "You have now upgraded your Point Empire to Level 2!"
-                            me.shop_main(self.user,self.score,pointsDict)
-                            break;
-                        else:
-                            print "There was an error purchasing this upgrade!"
-                            me.shop_main(self.user,self.score,pointsDict)
-                elif self.score < 10000:
-                    print "You don't have enough points to purchase this upgrade!"
-                    me.shop_main(self.user,self.score,pointsDict)     
-        if args[0]=='upgrade' and args[1]=='--Point' and args[2]=='Empire':
-            for i in range(100):
-                e5='Machine'
-                if e5 in pointsDict:
-                    userHasPointEmpire2=True
-                    break;
-                else:
-                    print("You haven't purchased the Empire Module upgrade yet!")
-                    me.shop_main(self.user,self.score,pointsDict)
-                    break;
-            if userHasPointEmpire2==True:
-                if self.score>20000:
-                    self.score-=20000
-                    pointsDict['EmpireLVL']=3
-                    for i in range(100):
-                        e6='MachineLVL'
-                        if e6 in pointsDict:
-                            print "You have now upgraded your Point Empire to Level 3!"
-                            print "This is the maximum level for this skill."
-                            me.shop_main(self.user,self.score,pointsDict)
-                            break;
-                        else:
-                            print "There was an error purchasing this upgrade!"
-                            me.shop_main(self.user,self.score,pointsDict)
-                elif self.score < 20000:
-                    print "You don't have enough points to purchase this upgrade!"
-                    me.shop_main(self.user,self.score,pointsDict)
 #################### END OF UPGRADE FOR 'POINT MACHINE'                
         else:
             print("Invalid Command.")
