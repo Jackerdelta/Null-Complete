@@ -1,6 +1,13 @@
 from main.Handler.PointHandler import *
 from main.Handler.UserHandler import *
-from main.Game.shop_main import shop_main
+from main.Handler.UpgradeHandler import *
+
+from main.Upgrades.PointEmpire import *
+from main.Upgrades.PointFactory import *
+from main.Upgrades.PointMachine import *
+from main.Upgrades.Person import *
+
+from main.Game.shop_main import shop_main, UpgradeDict, LvlDict
 import sys,random
 from main import Game
 
@@ -14,7 +21,7 @@ class main():
         self.points=PointHandler(user,score)
         self.user=user
         
-        self.points.addPoint(100000, False)
+        self.points.addPoint(100000000, False)
         
         self.score=score
         
@@ -22,146 +29,110 @@ class main():
         self.scoreLVL2=random.randint(1,10)
         self.scoreLVL3=random.randint(1,20)
         
-        self.turns=random.randint(1,3)
+        self.turns=Engineer().calculateSeasonLength()
         
         self.print_score=0
         
-        self.pointDict={}
+        self.UpgradeDict={}
         
-        self.MachineLVL1=random.randint(1,3)
-        self.MachineLVL2=random.randint(1,5)
-        self.MachineLVL3=random.randint(1,8)
-        
-        self.EmpireLVL1=self.points.getPoints(self.user, False)*random.randint(1,3)
         
         self.MachinePoints=0
         self.FactoryPoints=0
         self.EmpirePoints=0
-        
-        self.MachineLVL=0
-        self.FactoryLVL=0
-        self.EmpireLVL=0
-        
-        self.hasPointMachine=False
-        self.hasPointFactory=False
-        self.hasPointEmpire=False
-        '''
-        st_=raw_input("Start? Y/N:")
-        if st_.lower()=="yes" or "y":
-            this.main_loop(self,shop_main.pointsDict)
-        else:
-            print("Well thanks for coming along for the party!")
-            sys.exit("Bye bye!")
-        '''
     
-    
+    def getPoints(self):
+        return self.points.getPoints(self.user)
     def fromStartEvent(self):
         this=main
         st_=raw_input("Start? Y/N:")
         if st_.lower()=="yes" or "y":
-            this.main_loop(self,shop_main.pointsDict)
+            this.main_loop(self,shop_main.UpgradeDict)
+            PointMachine().setLevel(1)
+            PointFactory().setLevel(1)
+            PointEmpire(self.user, self.points.getPoints(self.user, False)).setLevel(1)
         else:
             print("Well thanks for coming along for the party!")
             sys.exit("Bye bye!")
-    def returnFromShopEvent(self,pointDict,score):
+            
+    def returnFromShopEvent(self,UpgradeDict,score):
         self.points.setPoints(score, False)
-        self.pointDict.clear()
-        self.pointDict=pointDict
+        self.UpgradeDict.clear()
+        self.UpgradeDict=UpgradeDict
         
-        print self.pointDict
+        print self.UpgradeDict
         
         start_again=raw_input("Start Game? Y/N: ")
         if start_again.lower()=="y" or start_again.lower()=="yes":
             this=Game.Game
-            this.main.main_loop(self, pointDict)
-    def main_loop(self,pointDictt):
-        for i in range(100):
-            key='Machine'
-            key1='Factory'
-            key2='Empire'
-            if key in self.pointDict:
-                self.hasPointMachine=True
-                print "Point Machine Module Enabled."
-                break;
-            if key1 in self.pointDict:
-                self.hasPointFactory=True
-                print "Point Factory Module Enabled."
-                break;
-            if key2 in self.pointDict:
-                self.hasPointEmpire=True
-                print "Point Factory Module Enabled." 
-                break;   
-            else:
-                print "User does not have Point Machine enabled."
-                print self.pointDict
-                break;
-
-        for skill,level in self.pointDict.items():
-            a='MachineLVL'
-            a1='FactoryLVL'
-            a2='EmpireLVL'
-            if a in self.pointDict:
-                self.MachineLVL=level
-                print self.MachineLVL
-                break;
-            if a1 in self.pointDict:
-                self.FactoryLVL=level
-                print self.FactoryLVL
-                break;
-            if a2 in self.pointDict:
-                self.EmpireLVL=level
-                print self.EmpireLVL
-                break;
-            else:
-                print "User has no skills purchased"
-                break;
+            this.main.main_loop(self, UpgradeDict)
+            
+    def main_loop(self,UpgradeDictt):
+        User = UpgradeHandler(UpgradeDict, LvlDict)
+        
+        if User.hasUpgrade('Machine'):
+            self.hasPointMachine=True
+            print "Point Machine Module Enabled."
+            
+        if User.hasUpgrade('Factory'):
+            print "Point Factory Module Enabled."
+    
+        if User.hasUpgrade('Empire'):
+            print "Point Empire Module Enabled."    
+        
         
         active_state=True
         while active_state==True:
             #Start loop
 
             prim=raw_input("Pick Apple? Y/N: ")
-            print(self.turns)
-            if prim.strip()=='y' or prim.strip()=="Y" or prim.strip()=="yes" or prim.strip()=="YES":
-                self.points.addPoint(self.scoreLVL1, False)
-                self.print_score+=1
-                self.turns-=1
-                
-                #######
-                
-                if self.hasPointMachine==True:
-                    self.points.addPoint(self.MachineLVL1, False)
-                    self.MachinePoints+=self.MachineLVL1
-                if self.hasPointFactory==True:
-                    self.points.addPoint(1, False)
-                    self.FactoryPoints+=1
-                if self.hasPointEmpire==True:
-                    self.points.addPoint(self.EmpireLVL1, False)
-                    self.EmpirePoints+=self.EmpireLVL1
-                ########
-                
-                if self.turns == 0 or self.turns < 0:
-                    print "Your final score is:",self.points.getPoints(self.user, False)
-                    if self.hasPointMachine==True:
-                        print "You earned a bonus of",self.MachinePoints,"from your 'Points Machine' upgrade!"
-                    if self.hasPointFactory==True:
-                        print "You earned a bonus of",self.FactoryPoints,"from your 'Points Factory' upgrade!"
-                    if self.hasPointEmpire==True:
-                        print "You earned a bonus of",self.EmpirePoints,"from your 'Points Factory upgrade!"
-                    else:
-                        pass
-                    shop_=raw_input("Go to shop? Y/N:")
-                    if shop_.strip()=='y' or shop_.strip()=="Y" or shop_.strip()=="yes" or shop_.strip()=="YES":
-                        me=Game.Game
-                        me.shop_main(self.user,self.points.getPoints(self.user, False),self.pointDict)
-                        break
-                else:
-                    pass
-                
+            print("Turns Remaining,", self.turns)
+            
+            #Yes
+            if prim.strip()=='y' or prim.strip()=="Y" or prim.strip()=="yes" or prim.strip()=="YES" or prim.strip() == "yy".lower():
+                for i in range(self.turns):
+                    self.points.addPoint(Worker().calculatePoints(), True)
+                    self.print_score+=1
+                    self.turns-=1
+                    
+                    #Code for adding in bonus points based on what upgrades are owned.
+                    
+                    if User.hasUpgrade('Machine'):
+                        self.MachinePoints = PointMachine().calculatePoints()
+                        self.points.addPoint(self.MachinePoints, False)
+                    
+                    if User.hasUpgrade('Factory'):
+                        self.FactoryPoints = PointFactory().calculatePoints()
+                        self.points.addPoint(self.FactoryPoints, False)
+                        
+                    if User.hasUpgrade('Empire'):
+                        self.EmpirePoints = PointEmpire(self.user, self.points.getPoints(self.user, False)).calculatePoints()
+                        self.points.addPoint(self.EmpirePoints, False)
+                    ########
+                    
+                    if self.turns == 0 or self.turns < 0:
+                        self.turns += Engineer().calculateSeasonLength()
+                        print "Your final score is:",self.points.getPoints(self.user, False)
+                        
+                        if User.hasUpgrade('Machine'):
+                            print "You earned a bonus of",self.MachinePoints,"from your 'Points Machine' upgrade! Level(",PointMachine().getLevel(),")"
+                            
+                        if User.hasUpgrade('Factory'):
+                            print "You earned a bonus of",self.FactoryPoints,"from your 'Points Factory' upgrade! Level(",PointFactory().getLevel(),")"
+                                    
+                        if User.hasUpgrade('Empire'):
+                            print "You earned a bonus of",self.EmpirePoints,"from your 'Points Empire' upgrade! Level(",PointEmpire(self.user,self.score).getLevel(),")"
+                        
+                        shop_=raw_input("Go to shop? Y/N:")
+                        if shop_.strip()=='y' or shop_.strip()=="Y" or shop_.strip()=="yes" or shop_.strip()=="YES":
+                            
+                            Game.Game.shop_main(self.user,self.points.getPoints(self.user, False),self.UpgradeDict).storeFront()
+                            break;
+            #No    
             elif prim.strip()=="n" or prim.strip()=="no" or prim.strip()=="N" or prim.strip()=="NO":
                 break
                 print("Thanks for playing!")
                 sys.exit("Really, thanks!")
+            
             else:
                 break
                 print("Invalid Command.")
